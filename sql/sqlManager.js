@@ -56,30 +56,12 @@ exports.login = function(username, password, callback) {
     });
     console.log(result);
   });
-
-  // request.on('row', function(columns) {
-  //     console.log('No Error 1');
-  //   if (rows = 0) {
-  //     console.log('Wrong username/ password')
-  //     return 0;
-  //   } else {
-  //     console.log('Logged In, User ID = ' + rows[0].PersonId);
-  //     updateRequest = new Request(
-  //       "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
-  //       function(err) {
-  //         console.log('Checking for Error 2...')
-  //         if (err) throw err;
-  //       }
-  //     );
-  //     connection.execSql(updateRequest);
-  //     callback(rows[0].PersonId);
-  //   });
-  //   connection.execSql(request);
 }
 
 exports.addUser = function(username, password, isAdmin) {
   console.log('Adding new user...');
-  request = new Request("INSERT dbo.Person (UserName, Password, Token, AdminStatus, Status) OUTPUT INSERTED.PersonId VALUES (@UserName, @Password, @Token, @AdminStatus, @Status);", function(err) {
+  request = new Request("INSERT dbo.Person (UserName, Password, Token, AdminStatus, Status) OUTPUT INSERTED.PersonId VALUES (@UserName, @Password, @Token, @AdminStatus, @Status);",
+  function(err) {
     if (err) {
       console.log(err);}
     });
