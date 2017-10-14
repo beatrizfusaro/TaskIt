@@ -9,71 +9,68 @@ exports.initialize = function(callback) {
 
   // Create connection to database
   var config =
-     {
-       userName: 'beatrizfusaro', // update me
-       password: 'Myageis48', // update me
-       server: 'taskit.database.windows.net', // update me
-       options:
-          {
-             database: 'TaskIt' //update me
-             , encrypt: true
-          }
-     }
+  {
+    userName: 'beatrizfusaro', // update me
+    password: 'Myageis48', // update me
+    server: 'taskit.database.windows.net', // update me
+    options:
+    {
+      database: 'TaskIt' //update me
+      , encrypt: true
+    }
+  }
   console.log('Attempting to Establish Connection...');
   connection = new Connection(config);
 
   // Attempt to connect and execute queries if connection goes through
   connection.on('connect', function(err)
-     {
-       if (err)
-         {
-            console.log(err);
-         } else {
-           console.log('Connection Established');
-           callback();
-         }
-     }
-   );
- }
+  {
+    if (err)
+    {
+      console.log(err);
+    } else {
+      console.log('Connection Established');
+      callback();
+    }
+  }
+);
+}
 
-exports.login = function(username, password, callback)
-   { console.log('Attempting login...');
+exports.login = function(username, password, callback) {
+  console.log('Attempting login...');
 
-       // Read all rows from table
-       var query = "SELECT PersonId FROM dbo.Person WHERE UserName='"+username+"' AND Password='"+password+"'";
-       console.log(query);
-     request = new Request(
-        query,
-             function(err, rows, result)
-                {
-                  console.log('Checking for Error 1...');
-                  if (err) throw err;
-                  if (rows = 0) {
-                    console.log('Wrong username/ password')
-                    return 0;
-                  } else {
-                    console.log('Logged In, User ID = ' + rows[0].PersonId);
-                    updateRequest = new Request(
-                         "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
-                            function(err)
-                               {
-                                 console.log('Checking for Error 2...')
-                                 if (err) throw err;
-                               }
-                           );
-                    connection.execSql(updateRequest);
-                    callback(rows[0].PersonId);
-                  }
-                }
-            );
-     connection.execSql(request);
-   }
+  // Read all rows from table
+  var query = "SELECT PersonId FROM dbo.Person WHERE UserName='"+username+"' AND Password='"+password+"'";
+  console.log(query);
+  request = new Request(query, function(err, rows, result) {
+    console.log('Checking for Error 1...');
+    if (err) throw err;
+    console.log('No Error 1');
+    if (rows = 0) {
+      console.log('Wrong username/ password')
+      return 0;
+    } else {
+      console.log('Logged In, User ID = ' + rows[0].PersonId);
+      updateRequest = new Request(
+        "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
+        function(err) {
+          console.log('Checking for Error 2...')
+          if (err) throw err;
+        }
+      );
+      connection.execSql(updateRequest);
+      callback(rows[0].PersonId);
+    }
+  }
+);
+connection.execSql(request);
+}
 
-  exports.addUser = function(username, password, isAdmin) {
-    console.log('Adding new user...');
-    request = new Request("INSERT dbo.Person (UserName, Password, Token, AdminStatus, Status) OUTPUT INSERTED.PersonId VALUES (@UserName, @Password, @Token, @AdminStatus, @Status);", function(err) {
-     if (err) {
-        console.log(err);}
+exports.addUser = function(username, password, isAdmin) {
+  console.log('Adding new user...');
+  request = new Request("INSERT dbo.Person (UserName, Password, Token, AdminStatus, Status) OUTPUT INSERTED.PersonId VALUES (@UserName, @Password, @Token, @AdminStatus, @Status);", function(err) {
+    if (err) {
+      console.log(err);}
     });
     request.addParameter('UserName', TYPES.NVarChar, username);
     request.addParameter('Password', TYPES.NVarChar , password);
@@ -81,13 +78,13 @@ exports.login = function(username, password, callback)
     request.addParameter('AdminStatus', TYPES.Bit, isAdmin);
     request.addParameter('Status', TYPES.Bit, 0);
     request.on('row', function(columns) {
-        columns.forEach(function(column) {
-          if (column.value === null) {
-            console.log('NULL');
-          } else {
-            console.log("Id of inserted user is " + column.value);
-          }
-        });
+      columns.forEach(function(column) {
+        if (column.value === null) {
+          console.log('NULL');
+        } else {
+          console.log("Id of inserted user is " + column.value);
+        }
+      });
     });
     connection.execSql(request);
   }
