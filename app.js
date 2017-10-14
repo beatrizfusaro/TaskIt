@@ -1,5 +1,6 @@
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var sqlManager = require('./sql/sqlManager.js');
 
 var app = express();
 var httpUnencoded = bodyParser.urlencoded({ extended: false });
@@ -14,12 +15,12 @@ app.get('/about', function (req, res) {
 
 app.get('/login',function (req,res) {
   // Render login page
-  res.sendFile('login.html');
+  res.sendFile(__dirname + '/'+staticContentDir+ '/pages/examples/login.html');
 });
 
 app.post('/login', function (req,res) {
   var post = req.body;
-  if (typeof post.rfid !== 'undefined'){
+  if (!post.rfid) {
     // RFID Login
     loginCredentials = sqlManager.attemptLogin(post.rfid);
   } else {

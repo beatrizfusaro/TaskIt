@@ -59,7 +59,7 @@ exports.login = function(username, password)
      connection.execSql(request);
    }
 
-  exports.addUser(username, password, isAdmin) {
+  exports.addUser = function(username, password, isAdmin) {
     console.log('Adding new user...');
     request = new Request("INSERT dbo.Person (UserName, Password, Token, AdminStatus, Status) OUTPUT INSERTED.PersonId VALUES (@UserName, @Password, @Token, @AdminStatus, @Status);", function(err) {
      if (err) {
