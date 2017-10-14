@@ -55,7 +55,6 @@ exports.login = function(username, password, callback) {
     });
     console.log(result);
   });
-  request.on('done',function())
   connection.execSql(request);
 }
 
