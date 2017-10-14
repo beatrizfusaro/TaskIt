@@ -32,7 +32,7 @@ app.post('/logmein', function (req,res) {
   sqlManager.initialize(function () {
     sqlManager.login(post.user,post.password, function(credential) {
       if (credential > 0) {
-        //req.session.user_id = credential;
+        req.session.user_id = credential;
         console.log(credential);
         res.redirect('/tasks');
       } else {
@@ -67,10 +67,10 @@ app.get('/admin/taskManager', function(req,res) {
 });
 
 app.get('/tasks', function (req,res) {
-  res.send('tasks page');
   if (!req.session.user_id) {
     res.redirect('/login'); // Not logged in
   }
+  res.send('tasks page');
 });
 
 app.post('/asset', function(req,res) {
