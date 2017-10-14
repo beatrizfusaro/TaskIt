@@ -53,7 +53,6 @@ exports.login = function(username, password, callback) {
         callback(column.value);
       }
     });
-    console.log(result);
   });
   connection.execSql(request);
 }

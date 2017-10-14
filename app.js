@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var sqlManager = require('./sql/sqlManager.js');
 var session = require('express-session');
+var uuid = require('uuid/v4');
 
 
 var app = express();
@@ -11,9 +12,9 @@ var staticContentDir = 'content/static_html/';
 
 app.use(express.static(staticContentDir));
 app.use(httpUnencoded);
-/*app.use(session({
+app.use(session({
   genid: function(req) {
-    return genuuid() // use UUIDs for session IDs
+    return uuid(); // use UUIDs for session IDs
   },
   secret: 'entropy death of the universe'
 }));
