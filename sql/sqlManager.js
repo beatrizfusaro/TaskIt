@@ -44,6 +44,7 @@ exports.login = function(username, password, callback)
           "SELECT PersonId FROM dbo.Person WHERE UserName = "+username+" AND Password = "+password,
              function(err, rows, result)
                 {
+                  console.log('Checking for Error 1...');
                   if (err) throw err;
                   if (rows = 0) {
                     console.log('Wrong username/ password')
@@ -52,6 +53,7 @@ exports.login = function(username, password, callback)
                     console.log('Logged In, User ID = ' + rows[0].PersonId);
                     updateRequest = new Request(
                          "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
+                            console.log('Checking for Error 2...');
                             function(err)
                                {
                                  if (err) throw err;
