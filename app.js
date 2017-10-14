@@ -7,8 +7,11 @@ var staticContentDir = 'content/static_html/';
 
 app.use(express.static(staticContentDir));
 
-app.get('/sqlTest/', function (req, res) {
+app.get('/sqlTest', function (req, res) {
   sqlTest.queryDatabase();
+})
+app.get('/about', function (req, res) {
+  res.send('about')
 })
 
 
