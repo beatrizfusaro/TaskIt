@@ -1,0 +1,29 @@
+{
+  "name": "taskit",
+  "version": "1.0.0",
+  "description": "Project Management Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beatrizfusaro/TaskIt.git"
+  },
+  "keywords": [
+    "Project",
+    "Management",
+    "Production",
+    "Control",
+    "Productivity"
+  ],
+  "author": "Beatriz Fusaro, Asimm Hirani, Gear Kim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beatrizfusaro/TaskIt/issues"
+  },
+  "homepage": "https://github.com/beatrizfusaro/TaskIt#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
