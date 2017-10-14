@@ -10,6 +10,10 @@ var httpUnencoded = bodyParser.urlencoded({ extended: false });
 
 var staticContentDir = 'content/static_html/';
 
+app.get('/', function (req,res) {
+  res.redirect('/login');
+});
+
 app.use(express.static(staticContentDir));
 app.use(httpUnencoded);
 app.use(session({
@@ -19,9 +23,6 @@ app.use(session({
   secret: 'entropy death of the universe'
 }));
 
-app.get('/', function (req,res) {
-  res.redirect('/login');
-});
 app.get('/about', function (req, res) {
   res.send('about')
 });
