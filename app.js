@@ -20,11 +20,12 @@ app.get('/login',function (req,res) {
 
 app.post('/login', function (req,res) {
   var post = req.body;
+  sqlManager.initialize(); // Intialize new instance of SQLmanager
   if (!post.rfid) {
     // RFID Login
     loginCredentials = sqlManager.attemptLogin(post.rfid);
   } else {
-    loginCredentials = sqlManager.attemptLogin(post.user,post.password);
+    loginCredentials = sqlManager.login(post.user,post.password);
   }
   if (loginCredentials > 0) {
     req.session.user_id = loginCredentials;
