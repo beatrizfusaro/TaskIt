@@ -24,7 +24,7 @@ app.post('/logmein', function (req,res) {
   sqlManager.initialize(function () {
     sqlManager.login(post.user,post.password, function(credential) {
       if (credential > 0) {
-        req.session.user_id = loginCredentials;
+        req.session.user_id = credential;
         req.redirect('/tasks');
       } else {
         req.redirect('/login');
