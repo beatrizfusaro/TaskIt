@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var sqlManager = require('./sql/sqlManager.js');
+var session = require('express-session');
+
 
 var app = express();
 var httpUnencoded = bodyParser.urlencoded({ extended: false });
@@ -9,7 +11,12 @@ var staticContentDir = 'content/static_html/';
 
 app.use(express.static(staticContentDir));
 app.use(httpUnencoded);
-
+app.use(session({
+  genid: function(req) {
+    return genuuid() // use UUIDs for session IDs
+  },
+  secret: 'entropy death of the universe'
+}));
 app.get('/about', function (req, res) {
   res.send('about')
 });
