@@ -53,9 +53,9 @@ exports.login = function(username, password, callback)
                     console.log('Logged In, User ID = ' + rows[0].PersonId);
                     updateRequest = new Request(
                          "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
-                            console.log('Checking for Error 2...');
                             function(err)
                                {
+                                 console.log('Checking for Error 2...')
                                  if (err) throw err;
                                }
                            );
