@@ -20,7 +20,7 @@ app.use(session({
 }));
 app.get('/about', function (req, res) {
   res.send('about')
-});*/
+});
 
 app.get('/login',function (req,res) {
   // Render login page
