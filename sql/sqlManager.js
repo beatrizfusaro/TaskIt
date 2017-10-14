@@ -42,7 +42,6 @@ exports.login = function(username, password, callback) {
   request = new Request(query, function(err, rowCount, rows) {
     console.log('Checking for Error 1...');
     if (err) throw err;
-    console.log('Checking for Error 2...');
     if (rowCount = 0) {
       return 0;
     }
