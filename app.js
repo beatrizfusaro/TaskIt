@@ -11,7 +11,7 @@ var httpUnencoded = bodyParser.urlencoded({ extended: false });
 var staticContentDir = 'content/static_html/';
 
 app.get('/', function (req,res) {
-  res.redirect('/login');
+  res.redirect('login');
 });
 
 app.use(express.static(staticContentDir));
