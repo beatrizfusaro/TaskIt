@@ -23,17 +23,14 @@ exports.initialize = function(callback) {
   connection = new Connection(config);
 
   // Attempt to connect and execute queries if connection goes through
-  connection.on('connect', function(err)
-  {
-    if (err)
-    {
+  connection.on('connect', function(err) {
+    if (err) {
       console.log(err);
     } else {
       console.log('Connection Established');
       callback();
     }
-  }
-);
+  });
 }
 
 exports.login = function(username, password, callback) {
@@ -51,34 +48,33 @@ exports.login = function(username, password, callback) {
     }
   });
   request.on('row', function(columns) {
-            columns.forEach(function(column) {
-              if (column.value !== null) {
-                console.log(column.value);
-                return column.value;
-              }
-            });
-            console.log(result);
-        });
+    columns.forEach(function(column) {
+      if (column.value !== null) {
+        console.log(column.value);
+        callback(column.value);
+      }
+    });
+    console.log(result);
+  });
 
-  request.on('row', console.log('No Error 1');
-    if (rows = 0) {
-      console.log('Wrong username/ password')
-      return 0;
-    } else {
-      console.log('Logged In, User ID = ' + rows[0].PersonId);
-      updateRequest = new Request(
-        "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
-        function(err) {
-          console.log('Checking for Error 2...')
-          if (err) throw err;
-        }
-      );
-      connection.execSql(updateRequest);
-      callback(rows[0].PersonId);
-    }
-  }
-);
-connection.execSql(request);
+  // request.on('row', function(columns) {
+  //     console.log('No Error 1');
+  //   if (rows = 0) {
+  //     console.log('Wrong username/ password')
+  //     return 0;
+  //   } else {
+  //     console.log('Logged In, User ID = ' + rows[0].PersonId);
+  //     updateRequest = new Request(
+  //       "UPDATE dbo.Person SET Status = 1 WHERE PersonId = " + rows[0].PersonId,
+  //       function(err) {
+  //         console.log('Checking for Error 2...')
+  //         if (err) throw err;
+  //       }
+  //     );
+  //     connection.execSql(updateRequest);
+  //     callback(rows[0].PersonId);
+  //   });
+  //   connection.execSql(request);
 }
 
 exports.addUser = function(username, password, isAdmin) {
