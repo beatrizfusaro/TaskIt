@@ -41,13 +41,13 @@ app.post('/logmein', function (req,res) {
       }
     });
   }); // Intialize new instance of SQLmanager
-  /*
-  if (!post.rfid) {
-    // RFID Login
-    loginCredentials = sqlManager.attemptLogin(post.rfid);
-  } else {*/
-    //loginCredentials = sqlManager.login(post.user,post.password);
-  //}
+  //
+  // if (!post.rfid) {
+  //   // RFID Login
+  //   loginCredentials = sqlManager.attemptLogin(post.rfid);
+  // } else {
+  //   //loginCredentials = sqlManager.login(post.user,post.password);
+  // //}
 });
 
 app.get('/admin', function (req, res) {
