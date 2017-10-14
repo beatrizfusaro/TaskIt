@@ -40,8 +40,10 @@ exports.login = function(username, password, callback)
    { console.log('Attempting login...');
 
        // Read all rows from table
+       var query = "SELECT PersonId FROM dbo.Person WHERE UserName='"+username+"' AND Password='"+password+"'";
+       console.log(query);
      request = new Request(
-          "SELECT PersonId FROM dbo.Person WHERE UserName = "+username+" AND Password = "+password,
+        query,
              function(err, rows, result)
                 {
                   console.log('Checking for Error 1...');
