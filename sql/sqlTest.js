@@ -14,9 +14,9 @@ var config =
            , encrypt: true
         }
    }
-var connection = new Connection(config);
+// var connection = new Connection(config);
 
-// Attempt to connect and execute queries if connection goes through
+/* Attempt to connect and execute queries if connection goes through
 connection.on('connect', function(err)
    {
      if (err)
@@ -29,7 +29,7 @@ connection.on('connect', function(err)
        }
    }
  );
-
+*/
 exports.queryDatabase = function()
 {
    console.log('Reading rows from the Table...');
