@@ -43,7 +43,7 @@ exports.login = function(username, password, callback) {
     console.log('Checking for Error 1...');
     if (err) throw err;
     if (rowCount = 0) {
-      return 0;
+      callback(0);
     }
   });
   request.on('row', function(columns) {
