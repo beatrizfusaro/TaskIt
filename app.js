@@ -71,12 +71,23 @@ app.get('/admin/taskManager', function(req,res) {
 
 });
 
+app.post('/admin/taskManager/new-task/', function(req,res) {
+  if (!req.session.user_id || !req.session.admin) {
+    res.redirect('/login'); // Insufficient privilages
+  }
+  sqlManager.initialize(function() {
+
+  })
+});
+
 app.get('/tasks', function (req,res) {
   if (!req.session.user_id) {
     res.redirect('/login'); // Not logged in
   }
-  sqlManager.initialize(sqlManager.getTasks,function(taskArra)) {
-    // Render task web-page
+  sqlManager.initialize(function(taskArray) {
+    sqlManager.getActiveTasks(req.session.user_id, function(taskArray) { // Get list of active tasks associated to person
+      // Render task web-page
+    });
   });
 });
 // Activate a given task after the user has selected it.
@@ -97,9 +108,9 @@ app.post('/update-task', function (req,res) {
   if (!req.session.user_id) {
     res.redirect('/login');
   }
-  sqlManager.initialize(function() {
-    sqlManager.updateTask(post.taskid,post.update,post.taskNewState, function() {
-      res.redirect('done');
+  sqlManager.initialize(function() { // Intialize SQL Server
+    sqlManager.updateTask(post.taskid,post.update,post.taskNewState, function() { // Update all information for the task
+      res.redirect('done'); // Redirect the user to the done page
     });
   })
 });
