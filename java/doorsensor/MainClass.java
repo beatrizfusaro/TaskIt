@@ -47,7 +47,7 @@ import gnu.io.SerialPortEventListener;
                     try {
                         inputLine = input.readLine();
                         String[] event = inputLine.split(",");
-                        if (Integer.parseInt(event[0]) > 128]) {
+                        if (Integer.parseInt(event[0]) > 128) {
                             RFSecureClient.logAssetEvent(event[0],
                                   event[1]);
                         } else {

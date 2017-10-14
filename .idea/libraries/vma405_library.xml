@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vma405_library">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Arduino/vma405_library.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
