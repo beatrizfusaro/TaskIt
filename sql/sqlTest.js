@@ -1,6 +1,9 @@
 var Connection = require('tedious').Connection;
-var Request = require('tedious').Request;
+var Request = require('tedious').Request
 
+const http = require('http');
+const url = require('url');
+const fixieUrl = url.parse(process.env.FIXIE_URL);
 // Create connection to database
 var config =
    {
