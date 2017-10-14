@@ -21,18 +21,23 @@ app.get('/login',function (req,res) {
 
 app.post('/logmein', function (req,res) {
   var post = req.body;
-  sqlManager.initialize(); // Intialize new instance of SQLmanager
+  sqlManager.initialize(function () {
+    sqlManager.login(post.user,post.password, function(credential) {
+      if (credential > 0) {
+        req.session.user_id = loginCredentials;
+        req.redirect('/tasks');
+      } else {
+        req.redirect('/login');
+      }
+    });
+  }); // Intialize new instance of SQLmanager
   /*
   if (!post.rfid) {
     // RFID Login
     loginCredentials = sqlManager.attemptLogin(post.rfid);
   } else {*/
-    loginCredentials = sqlManager.login(post.user,post.password);
+    //loginCredentials = sqlManager.login(post.user,post.password);
   //}
-  if (loginCredentials > 0) {
-    req.session.user_id = loginCredentials;
-    req.redirect('/tasks');
-  }
 });
 
 app.get('/admin', function (req, res) {

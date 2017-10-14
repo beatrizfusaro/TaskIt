@@ -3,7 +3,9 @@ var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 var exports = module.exports = {};
 
-exports.initialize = function() {
+var connection;
+
+exports.initialize = function(callback) {
 
   // Create connection to database
   var config =
@@ -17,20 +19,24 @@ exports.initialize = function() {
              , encrypt: true
           }
      }
-  var connection = new Connection(config);
+  console.log('Attempting to Establish Connection...');
+  connection = new Connection(config);
 
   // Attempt to connect and execute queries if connection goes through
   connection.on('connect', function(err)
      {
        if (err)
          {
-            console.log(err)
+            console.log(err);
+         } else {
+           console.log('Connection Established');
+           callback();
          }
      }
    );
  }
 
-exports.login = function(username, password)
+exports.login = function(username, password, callback)
    { console.log('Attempting login...');
 
        // Read all rows from table
@@ -52,7 +58,7 @@ exports.login = function(username, password)
                                }
                            );
                     connection.execSql(updateRequest);
-                    return rows[0].PersonId;
+                    callback(rows[0].PersonId);
                   }
                 }
             );
