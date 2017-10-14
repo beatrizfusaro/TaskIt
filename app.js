@@ -33,10 +33,10 @@ app.post('/logmein', function (req,res) {
       if (credential > 0) {
         //req.session.user_id = credential;
         console.log(credential);
-        req.redirect('/tasks');
+        res.redirect('/tasks');
       } else {
         console.log(credential);
-        req.redirect('/login');
+        res.redirect('/login');
       }
     });
   }); // Intialize new instance of SQLmanager
