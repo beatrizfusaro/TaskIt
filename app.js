@@ -8,6 +8,7 @@ var httpUnencoded = bodyParser.urlencoded({ extended: false });
 var staticContentDir = 'content/static_html/';
 
 app.use(express.static(staticContentDir));
+app.use(httpUnencoded);
 
 app.get('/about', function (req, res) {
   res.send('about')
@@ -18,15 +19,16 @@ app.get('/login',function (req,res) {
   res.sendFile(__dirname + '/'+staticContentDir+ '/pages/examples/login.html');
 });
 
-app.post('/login', function (req,res) {
+app.post('/logmein', function (req,res) {
   var post = req.body;
   sqlManager.initialize(); // Intialize new instance of SQLmanager
+  /*
   if (!post.rfid) {
     // RFID Login
     loginCredentials = sqlManager.attemptLogin(post.rfid);
-  } else {
+  } else {*/
     loginCredentials = sqlManager.login(post.user,post.password);
-  }
+  //}
   if (loginCredentials > 0) {
     req.session.user_id = loginCredentials;
     req.redirect('/tasks');
