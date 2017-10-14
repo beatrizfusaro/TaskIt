@@ -4,12 +4,12 @@ var Request = require('tedious').Request;
 // Create connection to database
 var config =
    {
-     userName: 'someuser', // update me
-     password: 'somepassword', // update me
-     server: 'edmacasqlserver.database.windows.net', // update me
+     userName: 'beatrizfusaro', // update me
+     password: 'Myageis48', // update me
+     server: 'taskit.database.windows.net', // update me
      options:
         {
-           database: 'somedb' //update me
+           database: 'TaskIt' //update me
            , encrypt: true
         }
    }

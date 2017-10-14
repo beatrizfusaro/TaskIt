@@ -8,7 +8,7 @@ var staticContentDir = 'content/static_html/';
 app.use(express.static(staticContentDir));
 
 app.get('/sqlTest', function (req, res) {
-
+  sqlTest.queryDatabase();
 })
 
 
