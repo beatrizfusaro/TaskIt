@@ -44,7 +44,7 @@ public class SerialReader {
             e.printStackTrace();
             System.exit(-1);
         }
-        return id.split("&");
+        return id.split(",");
     }
 
     public void finalize() throws Throwable {

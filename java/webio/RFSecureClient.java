@@ -17,11 +17,11 @@ import org.apache.http.util.EntityUtils;
 public class RFSecureClient {
 
     static String urlSensor =
-         "http://77a6cdd1.ngrok.io/sensor";
+         "http://taskitplatform.azurewebsites.net/login";
     static String urlMotion =
-            "http://77a6cdd1.ngrok.io/motion";
+          "http://taskitplatform.azurewebsites.net/asset";
 
-    public static void logEvent(String sensorID, String keyID) throws Exception {
+    public static void logLoginEvent(String sensorID, String keyID) throws Exception {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(urlSensor);
@@ -44,12 +44,13 @@ public class RFSecureClient {
             httpclient.close();
         }
     }
-    public static void logMovementEvent(String sensorID) throws Exception {
+    public static void logAssetEvent(String sensorID, String keyID) throws Exception {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(urlMotion);
             List <NameValuePair> nvps = new ArrayList <NameValuePair>();
             nvps.add(new BasicNameValuePair("sensorID",sensorID));
+            nvps.add(new BasicNameValuePair("keyID",keyID));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response2 = httpclient.execute(httpPost);
             System.out.print(httpclient);

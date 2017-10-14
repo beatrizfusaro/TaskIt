@@ -45,19 +45,13 @@ import gnu.io.SerialPortEventListener;
             public synchronized void serialEvent(SerialPortEvent oEvent) {
                 if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                     try {
-                        oldLine = inputLine;
                         inputLine = input.readLine();
-                        String[] event = inputLine.split("&");
-                        if (event.length == 4) {
-                            boolean e1 = event[1].compareTo("1") == 0;
-                            boolean e2 = event[3].compareTo("1") == 0;
-                            if (oldLine.compareTo(inputLine) != 0
-                                    && (e1 || e2)) {
-                                RFSecureClient.logMovementEvent((e1) ?
-                                        event[0] : event[2]);
-                            }
+                        String[] event = inputLine.split(",");
+                        if (Integer.parseInt(event[0]) > 128]) {
+                            RFSecureClient.logAssetEvent(event[0],
+                                  event[1]);
                         } else {
-                            RFSecureClient.logEvent(event[0],
+                            RFSecureClient.logLoginEvent(event[0],
                                     event[1]);
                         }
                         // System.out.println(inputLine);
