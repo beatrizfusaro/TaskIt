@@ -49,7 +49,7 @@ exports.login = function(username, password, callback) {
     if (rowCount = 0) {
       return 0;
     }
-  }
+  });
   request.on('row', function(columns) {
             columns.forEach(function(column) {
               if (column.value !== null) {
