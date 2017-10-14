@@ -39,7 +39,7 @@ exports.login = function(username, password, callback) {
   // Read all rows from table
   var query = "SELECT PersonId FROM dbo.Person WHERE UserName='"+username+"' AND Password='"+password+"'";
   console.log(query);
-  request = new Request(query, function(err, rowCount, rows) {
+  var request = new Request(query, function(err, rowCount, rows) {
     console.log('Checking for Error 1...');
     if (err) throw err;
     if (rowCount = 0) {
@@ -55,6 +55,8 @@ exports.login = function(username, password, callback) {
     });
     console.log(result);
   });
+
+  connection.execSql(request);
 }
 
 exports.addUser = function(username, password, isAdmin) {
