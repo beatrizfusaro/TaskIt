@@ -42,10 +42,25 @@ exports.login = function(username, password, callback) {
   // Read all rows from table
   var query = "SELECT PersonId FROM dbo.Person WHERE UserName='"+username+"' AND Password='"+password+"'";
   console.log(query);
-  request = new Request(query, function(err, rows, result) {
+  request = new Request(query, function(err, rowCount, rows) {
     console.log('Checking for Error 1...');
     if (err) throw err;
-    console.log('No Error 1');
+    console.log('Checking for Error 2...');
+    if (rowCount = 0) {
+      return 0;
+    }
+  }
+  request.on('row', function(columns) {
+            columns.forEach(function(column) {
+              if (column.value !== null) {
+                console.log(column.value);
+                return column.value;
+              }
+            });
+            console.log(result);
+        });
+
+  request.on('row', console.log('No Error 1');
     if (rows = 0) {
       console.log('Wrong username/ password')
       return 0;
