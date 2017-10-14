@@ -12,6 +12,11 @@ app.get('/about', function (req, res) {
   res.send('about')
 });
 
+app.get('/login',function (req,res) {
+  // Render login page
+  res.sendFile('login.html');
+});
+
 app.post('/login', function (req,res) {
   var post = req.body;
   if (typeof post.rfid !== 'undefined'){
@@ -44,6 +49,9 @@ app.get('/admin/taskManager', function(req,res) {
 
 app.get('/tasks', function (req,res) {
   res.send('tasks page');
+  if (!req.session.user_id) {
+    res.redirect('/login'); // Not logged in
+  }
 });
 
 app.post('/asset', function(req,res) {
