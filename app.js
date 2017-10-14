@@ -75,7 +75,33 @@ app.get('/tasks', function (req,res) {
   if (!req.session.user_id) {
     res.redirect('/login'); // Not logged in
   }
-  res.send('tasks page');
+  sqlManager.initialize(sqlManager.getTasks,function(taskArra)) {
+    // Render task web-page
+  });
+});
+// Activate a given task after the user has selected it.
+app.post('/activate-task', function (req,res) {
+  var post = req.body;
+  if (!req.session.user_id) {
+    res.redirect('/login');
+  }
+  sqlManager.initialize(function() { // Initialize the SQL connection
+    sqlManager.activateTask(post.taskid,function() {  // Activate task
+      res.redirect('done'); // Take the user to the done page
+    });
+  });
+});
+// The user can update a task he or she has been working on
+app.post('/update-task', function (req,res) {
+  var post = req.body;
+  if (!req.session.user_id) {
+    res.redirect('/login');
+  }
+  sqlManager.initialize(function() {
+    sqlManager.updateTask(post.taskid,post.update,post.taskNewState, function() {
+      res.redirect('done');
+    });
+  })
 });
 
 app.post('/asset', function(req,res) {
@@ -99,7 +125,9 @@ app.post('/asset', function(req,res) {
   res.send('asset IoT page');
 });
 
-
+app.get('done', function(req, res) {
+  // TODO: implement the done page
+});
 
 
 app.listen(process.env.PORT || 3000); //the port you want to use
