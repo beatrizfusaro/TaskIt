@@ -25,7 +25,7 @@ connection.on('connect', function(err)
        }
     else
        {
-           queryDatabase()
+           exports.queryDatabase()
        }
    }
  );
