@@ -42,7 +42,7 @@ exports.login = function(username, password, callback) {
   var request = new Request(query, function(err, rowCount, rows) {
     console.log('Checking for Error 1...');
     if (err) throw err;
-    if (rowCount = 0) {
+    if (!rowCount) {
       callback(0);
     }
   });
@@ -55,7 +55,7 @@ exports.login = function(username, password, callback) {
     });
     console.log(result);
   });
-
+  request.on('done',function())
   connection.execSql(request);
 }
 
