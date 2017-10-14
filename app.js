@@ -11,7 +11,7 @@ var staticContentDir = 'content/static_html/';
 
 app.use(express.static(staticContentDir));
 app.use(httpUnencoded);
-app.use(session({
+/*app.use(session({
   genid: function(req) {
     return genuuid() // use UUIDs for session IDs
   },
@@ -19,7 +19,7 @@ app.use(session({
 }));
 app.get('/about', function (req, res) {
   res.send('about')
-});
+});*/
 
 app.get('/login',function (req,res) {
   // Render login page
@@ -31,9 +31,11 @@ app.post('/logmein', function (req,res) {
   sqlManager.initialize(function () {
     sqlManager.login(post.user,post.password, function(credential) {
       if (credential > 0) {
-        req.session.user_id = credential;
+        //req.session.user_id = credential;
+        console.log(credential);
         req.redirect('/tasks');
       } else {
+        console.log(credential);
         req.redirect('/login');
       }
     });
