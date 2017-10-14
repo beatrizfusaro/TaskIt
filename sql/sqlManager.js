@@ -12,7 +12,7 @@ exports.initialize = function(callback) {
      {
        userName: 'beatrizfusaro', // update me
        password: 'Myageis48', // update me
-       server: 'taskitplatform.database.windows.net', // update me
+       server: 'taskit.database.windows.net', // update me
        options:
           {
              database: 'TaskIt' //update me
