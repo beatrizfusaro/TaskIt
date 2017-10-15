@@ -24,7 +24,7 @@ app.use(session({
 }));
 
 app.get('/about', function (req, res) {
-  res.send('about')
+
 });
 
 app.get('/login',function (req,res) {
@@ -35,24 +35,29 @@ app.get('/login',function (req,res) {
 app.post('/logmein', function (req,res) {
   var post = req.body;
   sqlManager.initialize(function () {
+    if (post.rfid !== null) {
+      sqlManager.rfidLogin(post.rfid,function(credential) {
+        if (credential > 0) {
+          req.session.user_id = credential;
+          console.log('[login] User "' + req.session.user_id + '" has signed onto the system using a kiosk');
+          res.redirect('/tasks');
+        } else {
+          console.log('[login] Invalid RFID "' + post.rfid + '" attempted login with kiosk.');
+        }
+      });
+    }
+
     sqlManager.login(post.user,post.password, function(credential) {
       if (credential > 0) {
         req.session.user_id = credential;
-        console.log(credential);
+        console.log('User ' + credential + ' has logged in.');
         res.redirect('/tasks');
       } else {
         console.log(credential);
         res.redirect('/login');
       }
     });
-  }); // Intialize new instance of SQLmanager
-  //
-  // if (!post.rfid) {
-  //   // RFID Login
-  //   loginCredentials = sqlManager.attemptLogin(post.rfid);
-  // } else {
-  //   //loginCredentials = sqlManager.login(post.user,post.password);
-  // //}
+  });
 });
 
 app.get('/admin', function (req, res) {
@@ -61,6 +66,16 @@ app.get('/admin', function (req, res) {
 
 app.get('/admin/analytics', function (req,res) {
   res.send('analytics page');
+});
+
+app.post('/admin/analytics/progress', function(req, res) {
+  if ()
+});
+app.post('/admin/analytics/taskHealth', function(req, res) {
+
+});
+app.post('admin/analytics/', function(req,res) {
+
 });
 
 app.get ('/admin/oversight', function (req,res) {
@@ -72,73 +87,76 @@ app.get('/admin/taskManager', function(req,res) {
 });
 
 app.post('/admin/taskManager/new-task/', function(req,res) {
+  var post = req.body;
   if (!req.session.user_id || !req.session.admin) {
     res.redirect('/login'); // Insufficient privilages
   }
   sqlManager.initialize(function() {
-
-  })
-});
-
-app.get('/tasks', function (req,res) {
-  if (!req.session.user_id) {
-    res.redirect('/login'); // Not logged in
-  }
-  sqlManager.initialize(function(taskArray) {
-    sqlManager.getActiveTasks(req.session.user_id, function(taskArray) { // Get list of active tasks associated to person
-      // Render task web-page
-    });
+    sqlManager.setNewTask(post.taskName,
+      post.summary,
+      post.desc,
+      post.team,
+      post.manager,
+      post.dueDate,
+      function() {
+        res.redirect('/admin/taskManager');
+      });
+    })
   });
-});
-// Activate a given task after the user has selected it.
-app.post('/activate-task', function (req,res) {
-  var post = req.body;
-  if (!req.session.user_id) {
-    res.redirect('/login');
-  }
-  sqlManager.initialize(function() { // Initialize the SQL connection
-    sqlManager.activateTask(post.taskid,function() {  // Activate task
-      res.redirect('done'); // Take the user to the done page
-    });
-  });
-});
-// The user can update a task he or she has been working on
-app.post('/update-task', function (req,res) {
-  var post = req.body;
-  if (!req.session.user_id) {
-    res.redirect('/login');
-  }
-  sqlManager.initialize(function() { // Intialize SQL Server
-    sqlManager.updateTask(post.taskid,post.update,post.taskNewState, function() { // Update all information for the task
-      res.redirect('done'); // Redirect the user to the done page
-    });
-  })
-});
 
-app.post('/asset', function(req,res) {
-  if (!req.body) return res.sendStatus(400);
-  else {
-    switch (req.body.machine) { // Which machine is the request sent from?
-      case 0:
-        res.send("Haas");
-      break;
-      case 1:
-        res.send('Chevy');
-      break;
-      case 2:
-        res.send('Bridgeport');
-      break;
-      default:
-        res.send("ProtoTrak");
-      break;
+  'admin/taskManager/editTask'
+
+
+  app.get('/tasks', function (req,res) {
+    if (!req.session.user_id) {
+      res.redirect('/login'); // Not logged in
     }
-  }
-  res.send('asset IoT page');
-});
+    sqlManager.initialize(function(taskArray) {
+      sqlManager.getActiveTasks(req.session.user_id, function(taskArray) { // Get list of active tasks associated to person
+        // Render task web-page
+      });
+    });
+  });
+  // Activate a given task after the user has selected it.
+  app.post('/activate-task', function (req,res) {
+    var post = req.body;
+    if (!req.session.user_id) {
+      res.redirect('/login');
+    }
+    sqlManager.initialize(function() { // Initialize the SQL connection
+      sqlManager.activateTask(post.taskid,function() {  // Activate task
+        res.redirect('done'); // Take the user to the done page
+      });
+    });
+  });
+  // The user can update a task he or she has been working on
+  app.post('/update-task', function (req,res) {
+    var post = req.body;
+    if (!req.session.user_id) {
+      res.redirect('/login');
+    }
+    sqlManager.initialize(function() { // Intialize SQL Server
+      sqlManager.updateTask(post.taskid,post.update,post.taskNewState, function() { // Update all information for the task
+        res.redirect('done'); // Redirect the user to the done page
+      });
+    })
+  });
 
-app.get('done', function(req, res) {
-  // TODO: implement the done page
-});
+  app.post('/asset', function(req,res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+      var post = req.body;
+      sqlManager.initialize(function() {
+        sqlManager.toggleMachineState(post.machineID, post.user_id, function (state) {
+          res.send('Asset "' + machineID + '" has changed state to "' + state + '" by user "' + post.user_id + '".')
+        })
+      })
+    }
+  });
+
+  app.get('done', function(req, res) {
+    // TODO: implement the done page
+  });
 
 
-app.listen(process.env.PORT || 3000); //the port you want to use
+  app.listen(process.env.PORT || 3000); //the port you want to use
